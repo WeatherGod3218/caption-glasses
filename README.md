@@ -1,4 +1,4 @@
-Captioning Heads Up Display Glasses (or CHUD Glasses) is a project started by in 2025. The goal is to create glasses that will listen to their surroundings and display what people are saying on the inside of the glasses.
+Caption Glasses are a pair of AR glasses that listen to your surroundings and display live captions directly in your field of view.
 
 
 ## Captioning Process
@@ -17,7 +17,7 @@ flowchart TD
 ```
 Use Python 3.12 for this (not sure what other versions work right now)
 
-## How to set this up locally
+## How to set this up locally (OUTDATED)
 
  - Make sure you have FFMPEG installed so Python can process the audio from the RTSP stream.
 - Install an RTSP server like MediaMTX, or set up a stream in VLC or any other software that can provide an RTSP stream.
