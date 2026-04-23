@@ -1,9 +1,0 @@
-
-services:
-  cg_localdev:
-    build: 
-      context: .
-      dockerfile: Containerfile
-    container_name: CaptionGlassesLocal
-
-

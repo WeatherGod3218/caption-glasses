@@ -161,7 +161,7 @@ async def process_websocket_bytes(raw_bytes: bytes, websocket: WebSocket) -> Non
         websocket (Websocket): The websocket connection that was done
     """
     global chunk_counter
-    
+
     audio_chunk: np.ndarray = np.frombuffer(raw_bytes, np.float32).copy()
 
     loop.run_in_executor(
@@ -173,6 +173,7 @@ async def process_websocket_bytes(raw_bytes: bytes, websocket: WebSocket) -> Non
 
     if chunk_counter % 8 == 0 and len(yamnet_buffer) == 16384:
         if len(yamnet_buffer) == 16384:
+
             async def ps(buf):
                 try:
                     s, sc = await loop.run_in_executor(
@@ -186,7 +187,9 @@ async def process_websocket_bytes(raw_bytes: bytes, websocket: WebSocket) -> Non
             asyncio.create_task(ps(np.array(yamnet_buffer)))
         chunk_counter = 0
 
-    speech_prob: asyncio.AbstractEventLoop = await loop.run_in_executor(None, lambda: transcription.check_vad(audio_chunk))
+    speech_prob: asyncio.AbstractEventLoop = await loop.run_in_executor(
+        None, lambda: transcription.check_vad(audio_chunk)
+    )
 
     if speech_prob > VAD_THRESHOLD:
         await procees_speaking(websocket, audio_chunk)

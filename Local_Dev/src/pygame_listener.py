@@ -77,7 +77,7 @@ async def send_audio(websocket):
         rate=44100,  # capture at device's native rate
         input=True,
         input_device_index=2,  # ALC257 Analog
-        frames_per_buffer=4096
+        frames_per_buffer=4096,
     )
     try:
         while True:
@@ -223,7 +223,10 @@ async def main():
         async with websockets.connect(uri) as websocket:
             print("Connected to WebSocket. Launching Pygame UI...")
             await asyncio.gather(
-                send_audio(websocket), receive_text(websocket), pygame_loop(),return_exceptions=True
+                send_audio(websocket),
+                receive_text(websocket),
+                pygame_loop(),
+                return_exceptions=True,
             )
     except Exception as e:
         print(f"Connection Error: {e}")
