@@ -155,7 +155,6 @@ async def process_silence(websocket: WebSocketData, audio_chunk: np.ndarray) -> 
     Processes the audio chunk as a silence chunk
 
     Arguments:
-        websocket (Websocket): The websocket connection of the speaking
         audio_chunk (np.ndarray): The audio chunk to be processed as a portion of silence
     """
     if websocket.is_speaking:
@@ -211,11 +210,9 @@ async def process_websocket_bytes(raw_bytes: bytes, websocket: WebSocketData) ->
 
         asyncio.create_task(ps(np.array(websocket.yamnet_buffer)))
 
-    speech_prob: asyncio.AbstractEventLoop = await loop.run_in_executor(
-        None, lambda: transcription.check_vad(audio_chunk)
-    )
+    speech_prob: asyncio.AbstractEventLoop = await loop.run_in_executor(None, transcription.check_vad)
 
     if speech_prob > VAD_THRESHOLD:
         await process_speaking(websocket, audio_chunk)
     else:
-        await process_silence(websocket, audio_chunk)
+        await process_silence(audio_chunk=audio_chunk)
