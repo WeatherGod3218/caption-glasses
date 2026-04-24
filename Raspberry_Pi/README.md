@@ -85,6 +85,5 @@ rpi-connect signin
 
 Disable:
 ```bash
-sudo systemctl disable rpi-connect
-sudo systemctl stop rpi-connect
+rpi-connect off
 ```
