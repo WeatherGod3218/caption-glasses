@@ -1,8 +1,8 @@
 Caption Glasses are a pair of AR glasses that listen to your surroundings and display live captions directly in your field of view.
 
-
+This pro
 ## Captioning Process
-Below is a flowchart of the Captioning process
+***Below is a flowchart diagram of the captioning process***
 
 ```mermaid
 flowchart TD
@@ -17,26 +17,19 @@ flowchart TD
 ```
 Use Python 3.12 for this (not sure what other versions work right now)
 
-## How to set this up locally (OUTDATED)
 
- - Make sure you have FFMPEG installed so Python can process the audio from the RTSP stream.
-- Install an RTSP server like MediaMTX, or set up a stream in VLC or any other software that can provide an RTSP stream.
-- Install the dependencies from `requirements.txt`.
-- Start the RTSP stream by connecting an audio source to a specific RTSP server (see below on how to start the stream).
-- Run `python rtsp.py --model [model] --rtsp_url [rtsp_url]` to start processing input. The default model is `tiny`. 
-- Start `listener.py` to receive JSON data from the websocket.
+## Local Development Guide
+*Docker Compose is recommended for running locally*
 
-## How to start an RTSP stream
-
-### Windows
-Use FFmpeg with `dshow` to capture your microphone and stream it to the desired URL, as shown below.
-
-    ffmpeg -f dshow -i audio="[mic name]" -ac 1 -ar 16000 -c:a pcm_s16le -f rtsp -rtsp_transport tcp [your rtsp url]
-
-You can get available devices by running `ffmpeg -list_devices true -f dshow -i dummy`.
-
-### Linux
-Use FFmpeg with `pulse` or `alsa` to capture the mic input and stream it, as shown below.
-
-    ffmpeg -f [device_manager] -i [mic_name] -ac 1 -ar 16000 -c:a pcm_s16le -f rtsp -rtsp_transport tcp [your rtsp url]
-You can get available sources with `pactl list sources short`.
+- Create a virtual environment in the base directory, ensure it is **Python 3.12**.
+- Install necessary dependencies for the application
+```sh
+pip install -r dev-requirements.txt
+```
+- Run the Docker Compose located in the Server directory
+  - If you do not have docker compose, run the port and environment vars manually.
+- Wait until the webserver starts on port **2001**, this will take upwards of 4 minutes.
+  - You can verify this by going to localhost:2001, if it is up, it will redirect you to the documentation.
+- If your microphone on your device uses a sampling rate OTHER THAN 44100, modify the .env variable in .env located in Local_Dev/src
+- Once started, run the **pygame_listener.py** script located in Local_Dev/src
+- If everything is correct, the transcription app should appear and connect, automatically transcribing from your microphone

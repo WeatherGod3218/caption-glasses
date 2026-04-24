@@ -9,6 +9,7 @@ import argparse
 import numpy as np
 from scipy.signal import resample_poly
 
+from config import DEVICE_CAPTURE_RATE
 parser = argparse.ArgumentParser(description="Transcription Display")
 parser.add_argument(
     "--mode",
@@ -74,7 +75,7 @@ async def send_audio(websocket):
     stream = p.open(
         format=FORMAT,
         channels=CHANNELS,
-        rate=44100,  # capture at device's native rate
+        rate=DEVICE_CAPTURE_RATE,  # capture at device's native rate
         input=True,
         input_device_index=2,  # ALC257 Analog
         frames_per_buffer=4096,
@@ -87,7 +88,7 @@ async def send_audio(websocket):
 
             data = stream.read(4096, exception_on_overflow=False)
             audio = np.frombuffer(data, dtype=np.float32)
-            resampled = resample_poly(audio, 160, 441).astype(np.float32)
+            resampled = resample_poly(audio, 160, DEVICE_CAPTURE_RATE/100).astype(np.float32)
 
             await websocket.send(resampled.tobytes())
             await asyncio.sleep(0.001)
