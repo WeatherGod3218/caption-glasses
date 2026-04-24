@@ -76,7 +76,6 @@ async def send_audio(websocket):
         channels=CHANNELS,
         rate=44100,  # capture at device's native rate
         input=True,
-        input_device_index=2,  # ALC257 Analog
         frames_per_buffer=4096,
     )
     try:
