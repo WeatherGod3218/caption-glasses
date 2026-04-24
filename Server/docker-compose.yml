@@ -1,7 +1,7 @@
 ---
 
 services:
-  cg_server:
+  jumpstart:
     build: 
       context: .
       dockerfile: Containerfile
